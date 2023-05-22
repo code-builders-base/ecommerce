@@ -1,0 +1,23 @@
+version: "3.8"
+
+networks:
+  network:
+    driver: bridge
+    name: network-ecommerce
+
+services:
+  db-postgresql:
+    image: postgres:10
+    container_name: db-postgresql
+    hostname: db-postgresql
+    volumes:
+      - /var/lib/postgresql/data
+      - ./pg-init-scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - network
+    restart: always
