@@ -6,12 +6,12 @@ networks:
     name: network-ecommerce
 
 services:
-  db-postgresql:
+  ecommerce-postgresql:
     image: postgres:10
-    container_name: db-postgresql
-    hostname: db-postgresql
+    container_name: ecommerce-postgresql
+    hostname: ecommerce-postgresql
     volumes:
-      - /var/lib/postgresql/data
+      - /var/lib/postgresql/ecommerce/data
       - ./pg-init-scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
       POSTGRES_USER: postgres
