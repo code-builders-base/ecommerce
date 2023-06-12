@@ -1,5 +1,6 @@
 package com.pifrans.ecommerce.rest.controllers;
 
+import com.pifrans.ecommerce.errors.exceptions.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -11,7 +12,7 @@ import java.util.List;
 public interface GenericController<T> {
 
     @GetMapping("/{id}")
-    ResponseEntity<T> findById(@PathVariable Long id);
+    ResponseEntity<T> findById(@PathVariable Long id) throws NotFoundException;
 
     @GetMapping
     ResponseEntity<List<T>> findAll();

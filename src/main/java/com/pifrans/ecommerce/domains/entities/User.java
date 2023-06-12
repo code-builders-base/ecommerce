@@ -1,6 +1,7 @@
 package com.pifrans.ecommerce.domains.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,8 @@ public class User implements Serializable {
     @Column(name = "last_name")
     private String lastName;
 
+    @Email(message = "Este e-mail não é válido")
+    @Column(unique = true)
     private String email;
 
 }

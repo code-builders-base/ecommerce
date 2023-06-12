@@ -1,5 +1,6 @@
 package com.pifrans.ecommerce.services;
 
+import com.pifrans.ecommerce.errors.exceptions.NotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -7,7 +8,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 public abstract class GenericServiceImpl<T> implements GenericService<T> {
     private final JpaRepository<T, Long> repository;
@@ -19,7 +19,7 @@ public abstract class GenericServiceImpl<T> implements GenericService<T> {
 
     public T findById(Class<T> tClass, Long id) {
         String message = String.format("Nenhum item (%s) de ID (%d) encontrado!", tClass.getSimpleName(), id);
-        return repository.findById(id).orElseThrow(() -> new NoSuchElementException(message));
+        return repository.findById(id).orElseThrow(() -> new NotFoundException(message));
     }
 
     public T save(T object) throws DataIntegrityViolationException {
@@ -35,12 +35,12 @@ public abstract class GenericServiceImpl<T> implements GenericService<T> {
             return repository.save(object);
         }
         String message = String.format("Não foi possível atualizar (%s) de ID (%d), não encontrado!", object.getClass().getSimpleName(), id);
-        throw new NoSuchElementException(message);
+        throw new NotFoundException(message);
     }
 
     public T deleteById(Class<T> tClass, Long id) {
         String message = String.format("Não foi possível excluir o item, pois não existe (%s) com ID (%d)!", tClass.getSimpleName(), id);
-        T object = repository.findById(id).orElseThrow(() -> new NoSuchElementException(message));
+        T object = repository.findById(id).orElseThrow(() -> new NotFoundException(message));
 
         repository.deleteById(id);
         return object;
