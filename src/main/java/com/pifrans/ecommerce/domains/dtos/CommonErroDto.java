@@ -8,8 +8,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class CommonErroDto {
-    private Integer statusCode;
-    private String statusName;
     private String message;
     private String path;
 }

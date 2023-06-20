@@ -11,6 +11,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @ControllerAdvice
@@ -24,20 +26,28 @@ public class GeneralHandler {
     }
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<CommonErroDto> handler(NotFoundException exception) {
-        var commonErroDto = new CommonErroDto(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.name(), exception.getMessage(), request.getRequestURI());
-        return new ResponseEntity<>(commonErroDto, HttpStatus.NOT_FOUND);
+    public ResponseEntity<List<CommonErroDto>> handler(NotFoundException exception) {
+        var commonErroDto = new CommonErroDto(exception.getMessage(), request.getRequestURI());
+        return new ResponseEntity<>(List.of(commonErroDto), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<CommonErroDto> handler(MethodArgumentNotValidException exception) {
-        var commonErroDto = new CommonErroDto(HttpStatus.CONFLICT.value(), HttpStatus.CONFLICT.name(), exception.getMessage(), request.getRequestURI());
-        return new ResponseEntity<>(commonErroDto, HttpStatus.CONFLICT);
+    public ResponseEntity<List<CommonErroDto>> handler(MethodArgumentNotValidException exception) {
+        var commonErroDtos = new ArrayList<CommonErroDto>();
+        var errors = exception.getBindingResult().getFieldErrors();
+
+        errors.forEach(error -> {
+            var errorMessage = error.getDefaultMessage();
+            var field = error.getField();
+            var finalMessage = String.format("Campo (%s), mensagem (%s)!", field, errorMessage);
+            commonErroDtos.add(new CommonErroDto(finalMessage, request.getRequestURI()));
+        });
+        return new ResponseEntity<>(commonErroDtos, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<CommonErroDto> handler(DataIntegrityViolationException exception) {
-        var commonErroDto = new CommonErroDto(HttpStatus.CONFLICT.value(), HttpStatus.CONFLICT.name(), Objects.requireNonNull(exception.getRootCause()).getMessage(), request.getRequestURI());
-        return new ResponseEntity<>(commonErroDto, HttpStatus.CONFLICT);
+    public ResponseEntity<List<CommonErroDto>> handler(DataIntegrityViolationException exception) {
+        var commonErroDto = new CommonErroDto(Objects.requireNonNull(exception.getRootCause()).getMessage(), request.getRequestURI());
+        return new ResponseEntity<>(List.of(commonErroDto), HttpStatus.CONFLICT);
     }
 }
