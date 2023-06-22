@@ -6,4 +6,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+    open-in-view: false
+
+# JWT
+jwt:
+  secret: U2VxdWVuY2lhRGVDYXJhY3RlcmVzUGFyYUFzc2luYXJUb2tlbg==
+  expiration: 86400000
 

@@ -6,19 +6,18 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public enum ReflectMethods {
-    GET_ID("getId");
-
+public enum SecurityProfiles {
+    ADMIN("ROLE_ADMIN"), USER("ROLE_USER");
 
     private final String description;
 
 
-    public static ReflectMethods toEnum(String description) {
+    public static SecurityProfiles toEnum(String description) {
         if (description == null || description.isEmpty()) {
             throw new NullPointerException("A descrição não pode ser nula ou vazia!");
         }
 
-        for (ReflectMethods x : ReflectMethods.values()) {
+        for (SecurityProfiles x : SecurityProfiles.values()) {
             if (description.equals(x.description)) {
                 return x;
             }
