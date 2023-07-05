@@ -27,6 +27,7 @@ public class JWTAuthorizationFilter extends GenericFilterBean {
             if (response.getStatus() == HttpStatus.FORBIDDEN.value()) {
                 Optional.ofNullable(header).orElseThrow(() -> new ForbiddenException("Não foi inserido um token no header 'Authorization'!"));
                 Optional.of(header).filter(h -> h.startsWith("Bearer ")).orElseThrow(() -> new ForbiddenException("Token inválido: o token dever ser do tipo 'Bearer token'!"));
+                throw new ForbiddenException("Você não tem permissão para executar está ação!");
             }
 
             filterChain.doFilter(request, response);

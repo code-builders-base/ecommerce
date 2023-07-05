@@ -1,6 +1,5 @@
 package com.pifrans.ecommerce.services.users;
 
-import com.pifrans.ecommerce.constants.SecurityProfiles;
 import com.pifrans.ecommerce.domains.entities.User;
 import com.pifrans.ecommerce.repositories.UserRepository;
 import com.pifrans.ecommerce.securities.UserDetailSecurity;
@@ -11,8 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Set;
 
 @Service
 public class UserServiceImpl extends GenericServiceImpl<User> implements UserService {
@@ -40,7 +37,7 @@ public class UserServiceImpl extends GenericServiceImpl<User> implements UserSer
             if (user == null) {
                 throw new UsernameNotFoundException(email);
             }
-            return new UserDetailSecurity(user.getId(), user.getEmail(), user.getPassword(), Set.of(SecurityProfiles.ADMIN));
+            return new UserDetailSecurity(user.getId(), user.getEmail(), user.getPassword(), user.getProfiles());
         } catch (UsernameNotFoundException e) {
             throw new UsernameNotFoundException(email);
         } catch (Exception e) {

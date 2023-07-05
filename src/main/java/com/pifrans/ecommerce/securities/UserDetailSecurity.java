@@ -1,6 +1,6 @@
 package com.pifrans.ecommerce.securities;
 
-import com.pifrans.ecommerce.constants.SecurityProfiles;
+import com.pifrans.ecommerce.domains.entities.Profile;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,12 +18,12 @@ public class UserDetailSecurity implements UserDetails {
     private Collection<? extends GrantedAuthority> authorities;
 
 
-    public UserDetailSecurity(Long id, String email, String password, Set<SecurityProfiles> profiles) {
+    public UserDetailSecurity(Long id, String email, String password, Set<Profile> profiles) {
         super();
         this.id = id;
         this.email = email;
         this.password = password;
-        this.authorities = profiles.stream().map(x -> new SimpleGrantedAuthority(x.getDescription())).collect(Collectors.toList());
+        this.authorities = profiles.stream().map(x -> new SimpleGrantedAuthority(x.getName())).collect(Collectors.toList());
     }
 
     @Override
@@ -65,7 +65,7 @@ public class UserDetailSecurity implements UserDetails {
         return id;
     }
 
-    public boolean hasRole(SecurityProfiles profile) {
-        return getAuthorities().contains(new SimpleGrantedAuthority(profile.getDescription()));
+    public boolean hasRole(Profile profile) {
+        return getAuthorities().contains(new SimpleGrantedAuthority(profile.getName()));
     }
 }
