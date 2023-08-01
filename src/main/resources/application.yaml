@@ -13,3 +13,9 @@ jwt:
   secret: U2VxdWVuY2lhRGVDYXJhY3RlcmVzUGFyYUFzc2luYXJUb2tlbg==
   expiration: 86400000
 
+# OpenAPI
+openapi:
+  server:
+    url:
+      dev: http://localhost:8080
+      prod: https://ecommerce.pifrans.com

@@ -10,7 +10,7 @@ public enum PublicMatchers {
 
     GET(new String[]{/*"/users/**"*/ "/products/**"}),
     POST(new String[]{"/auth/forgot/**", "/users/**"}),
-    ALL(new String[]{"/h2-console/**"});
+    ALL(new String[]{"/h2-console/**", "/swagger-ui/**", "/v3/**"});
 
 
     private final String[] endpoints;

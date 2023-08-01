@@ -3,6 +3,7 @@ package com.pifrans.ecommerce.rest.controllers;
 import com.pifrans.ecommerce.constants.ReflectMethods;
 import com.pifrans.ecommerce.rest.responses.SuccessResponse;
 import com.pifrans.ecommerce.services.GenericService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -37,6 +38,7 @@ public abstract class GenericControllerImpl<T, C> implements GenericController<T
     }
 
     @GetMapping
+    @Operation(summary = "Busca todos")
     public ResponseEntity<List<T>> findAll() {
         var list = service.findAll();
         return new SuccessResponse<List<T>>().handle(list, classController, request, HttpStatus.OK);

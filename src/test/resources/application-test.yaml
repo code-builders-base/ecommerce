@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+
+jwt:
+  secret: U2VxdWVuY2lhRGVDYXJhY3RlcmVzUGFyYUFzc2luYXJUb2tlbg==
+  expiration: 6400000

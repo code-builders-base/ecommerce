@@ -8,14 +8,15 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class GeneralHandler {
     private final HttpServletRequest request;
 
@@ -25,12 +26,14 @@ public class GeneralHandler {
         this.request = request;
     }
 
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<List<CommonErroDto>> handler(NotFoundException exception) {
         var commonErroDto = new CommonErroDto(exception.getMessage(), request.getRequestURI());
         return new ResponseEntity<>(List.of(commonErroDto), HttpStatus.NOT_FOUND);
     }
 
+    @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<List<CommonErroDto>> handler(MethodArgumentNotValidException exception) {
         var commonErroDtos = new ArrayList<CommonErroDto>();
@@ -45,6 +48,7 @@ public class GeneralHandler {
         return new ResponseEntity<>(commonErroDtos, HttpStatus.CONFLICT);
     }
 
+    @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<List<CommonErroDto>> handler(DataIntegrityViolationException exception) {
         var commonErroDto = new CommonErroDto(Objects.requireNonNull(exception.getRootCause()).getMessage(), request.getRequestURI());
