@@ -2,6 +2,7 @@ package com.pifrans.ecommerce.rest.controllers;
 
 import com.pifrans.ecommerce.domains.entities.Profile;
 import com.pifrans.ecommerce.services.profiles.ProfileService;
+import com.pifrans.ecommerce.utilities.ModelMapperUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +14,7 @@ public class ProfileController extends GenericControllerImpl<Profile, ProfileCon
 
 
     @Autowired
-    public ProfileController(ProfileService profileService, HttpServletRequest request) {
-        super(profileService, Profile.class, ProfileController.class, request);
+    public ProfileController(ProfileService profileService, HttpServletRequest request, ModelMapperUtil modelMapperUtil) {
+        super(profileService, Profile.class, ProfileController.class, request, modelMapperUtil);
     }
 }

@@ -3,32 +3,23 @@ package com.pifrans.ecommerce.rest.controllers;
 import com.pifrans.ecommerce.errors.exceptions.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
-public interface GenericController<T> {
+public interface GenericController<E> {
 
-    @GetMapping("/{id}")
-    ResponseEntity<T> findById(@PathVariable Long id) throws NotFoundException;
+    <D> ResponseEntity<D> findById(Class<D> classDto, Long id) throws NotFoundException;
 
-    @GetMapping
-    ResponseEntity<List<T>> findAll();
+    <D> ResponseEntity<List<D>> findAll(Class<D> classDto);
 
-    @GetMapping("/page")
-    ResponseEntity<Page<T>> findByPage(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "24") Integer linesPerPage, @RequestParam(defaultValue = "id") String orderBy, @RequestParam(defaultValue = "ASC") String direction);
+    <D> ResponseEntity<Page<D>> findByPage(Class<D> classDto, Integer page, Integer linesPerPage, String orderBy, String direction);
 
-    @PostMapping
-    ResponseEntity<T> save(@Validated @RequestBody T body);
+    <D> ResponseEntity<D> save(Class<D> classDto, E body);
 
-    @PostMapping("/saveAll")
-    ResponseEntity<List<T>> saveAll(@Validated @RequestBody List<T> body);
+    <D> ResponseEntity<List<D>> saveAll(Class<D> classDto, List<E> body);
 
-    @PutMapping
-    ResponseEntity<T> update(@Validated @RequestBody T body) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException;
+    <D> ResponseEntity<D> update(Class<D> classDto, E body) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException;
 
-    @DeleteMapping("/{id}")
-    ResponseEntity<T> deleteById(@PathVariable Long id);
+    <D> ResponseEntity<D> deleteById(Class<D> classDto, Long id);
 }

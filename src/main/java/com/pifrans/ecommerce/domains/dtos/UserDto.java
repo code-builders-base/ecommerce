@@ -28,4 +28,13 @@ public class UserDto {
     public static class Update extends Save {
         private Long id;
     }
+
+    @Getter
+    @Setter
+    public static class Resume {
+        private Long id;
+        private String email;
+        private String firstName;
+        private String lastName;
+    }
 }
